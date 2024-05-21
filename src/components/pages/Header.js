@@ -57,9 +57,7 @@ const HeaderLayout = styled.div`
   .content {
     background: #3d3d3d;
     color: #fff;
-    min-height: 400px;
-    max-height: 550px;
-    overflow-y: auto;
+
   }
 
   .backBtn {

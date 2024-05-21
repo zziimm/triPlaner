@@ -8,6 +8,9 @@ import PlanBox from './PlanBox.js';
 
 
 const PlanDetailLayout = styled.div`
+  min-height: 400px;
+  max-height: 550px;
+  overflow-y: auto;
   position: relative;
   padding: 1rem 0rem;
 

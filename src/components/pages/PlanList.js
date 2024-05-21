@@ -12,7 +12,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 const PlanListLayout = styled.div`
-
+  min-height: 400px;
+  max-height: 550px;
+  overflow-y: auto;
 `;
 
 

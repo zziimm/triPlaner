@@ -67,7 +67,7 @@ const Plane = styled.div`
     color: #fff;
     width: 100px;
     height: 100px;
-    top: 15px;
+    top: 25px;
     left: 0;
     animation: move 1.7s ease-in;
     animation-fill-mode: forwards;

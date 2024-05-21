@@ -5,6 +5,7 @@ import { IoMdClose, IoMdCheckmark } from "react-icons/io";
 
 
 const PlanBoxLayout = styled.div`
+
   /* position: relative; */
   box-sizing: border-box;
   width: 100%;

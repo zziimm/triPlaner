@@ -15,9 +15,6 @@ const PlanInsertLayout = styled.div`
   align-items: center;
   border-bottom: 1px solid gray;
   
-  .dateBox {
-    margin-top: 10px;
-  }
   input {
     margin-top: 15px;
     color: #FFF;
@@ -25,6 +22,12 @@ const PlanInsertLayout = styled.div`
     font-size: 22px;
     border: none;
     border-bottom: 1px solid #FFF;
+  }
+  .titleInput {
+    width: 20rem;
+  }
+  .dateBox {
+    margin-top: 10px;
   }
   .mainBtn {
     margin-top: 20px;
@@ -36,13 +39,14 @@ const PlanInsertLayout = styled.div`
     padding: 5px 15px;
   }
   .dateName {
-    color: #FFF; margin-right: 15px;
+    color: #FFF; 
+    margin-right: 15px;
   }
 `;
 
 function PlanInsert() {
   const isLogin = useSelector(selectLoginUser);
-  const email = isLogin.email
+  const email = isLogin?.email
   
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
@@ -70,7 +74,7 @@ function PlanInsert() {
   return (
     <PlanInsertLayout>
       {/* <div className='title'> </div> */}
-      <input value={title} onChange={titleChange} type='text' placeholder='여행지 또는 제목'/>
+      <input className='titleInput' value={title} onChange={titleChange} type='text' placeholder='여행지 또는 제목'/>
       <div className='dateBox'>
         <span className='dateName'>출발일</span>
         <input value={startDate} onChange={startDateChange} type='date' placeholder='날짜'/>

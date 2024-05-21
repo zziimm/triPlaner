@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { css, styled } from 'styled-components';
+import React, { useState } from 'react';
+import { styled } from 'styled-components';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectLoginUser } from '../../features/userinfo/userInfoSlice';
@@ -7,14 +7,12 @@ import { IoIosArrowBack } from "react-icons/io";
 
 const HeaderLayout = styled.div`
 
+  max-width: 500px;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  /* margin: 0 auto;
-  margin-top: 3rem; */
-  /* margin: 0 2rem; */
   border-radius: 4px;
   overflow: hidden;
   box-sizing: border-box;
@@ -59,6 +57,16 @@ const HeaderLayout = styled.div`
   .content {
     background: #3d3d3d;
     color: #fff;
+    min-height: 400px;
+    max-height: 550px;
+    overflow-y: auto;
+  }
+
+  .backBtn {
+    width: 25px;
+    height: 25px;
+    border: 1px solid #fff;
+    border-radius: 50%;
   }
 
 `;
@@ -120,9 +128,12 @@ function Header(props) {
   return (
       <HeaderLayout>
         <div className='headerBox'>
-          <IoIosArrowBack onClick={onCancel} />
+          <IoIosArrowBack className='backBtn' onClick={onCancel} />
           <MainTitle className='app-title'>{nowPage}</MainTitle>
-          <Outlet />
+          <div className='content'>
+            <Outlet />
+
+          </div>
           {/* {isLogin.email
             ?
               <Outlet />
@@ -135,17 +146,6 @@ function Header(props) {
           <p className='app-title app-footer'>IMJ</p>
         </div>
       </HeaderLayout>
-    // <HeaderLayout>
-    //   <div className='headerBox'>
-    //     { isLogin?.email 
-    //       ? <MainTitle $planebtn={planebtn} className='app-title'>일정 관리</MainTitle>
-    //       : <p className='app-title'>비행기가 이륙중입니다 !</p>
-    //     }
-    //     <MainTitle className='app-title'>{nowPage}</MainTitle>
-    //     <Outlet />
-    //     <p className='app-title app-footer'>IMJ</p>
-    //   </div>
-    // </HeaderLayout>
   );
 }
 

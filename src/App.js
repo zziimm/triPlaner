@@ -67,6 +67,11 @@ const GlobalStyle = createGlobalStyle`
       font-weight: 400;
       font-style: normal;
     }
+    .logoutBtn{
+      color: #fff;
+      border: 1px solid #fff;
+      border-radius: 15px;
+    }
 
     .mainBtn {
     cursor: pointer;
@@ -131,7 +136,7 @@ function App() {
         </Route>
       </Routes>
       {isLogin?.email
-        ? <button onClick={() => handleLogout()}>로그아웃</button>
+        ? <button className="logoutBtn" onClick={() => handleLogout()}>로그아웃</button>
         : ''
       }
     </>

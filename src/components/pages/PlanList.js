@@ -27,6 +27,9 @@ function PlanList(props) {
 
   useEffect(() => {
     fetchListings();
+    if (!email) {
+      navigate('/');
+    }
   }, [])
   
 

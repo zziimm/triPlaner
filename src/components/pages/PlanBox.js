@@ -57,15 +57,38 @@ const InsertModal = styled.div`
   input {
     border: none;
     font-size: 20px;
-
+    
+    
     background-color: #3d3d3d;
     border-bottom: 1px solid #fff;
-
   }
+  .titleInput {
+    width: 20rem;
+  }
+
+  .checkBtn {
+    margin-top: 10px;
+    border: 1px solid #fff;
+    padding: 6px;
+  }
+  .closeBtn {
+    color: #fff;
+    margin-top: 10px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    padding: 6px;
+  }
+
+
 `;
 
 function PlanBox({ day }) {
   const [insertModal, setInsertModal] = useState(false);
+  const [inputTime, setInputTime] = useState('');
+  const [inputTitle, setInputTitle] = useState('');
+
+  const handleInputTime = (e) => setInputTime(e.target.value);
+  const handleInputTitle = (e) => setInputTitle(e.target.value);
 
   const handleInsertModal = () => {
     setInsertModal(!insertModal)
@@ -83,13 +106,14 @@ function PlanBox({ day }) {
             <InsertModal>
               <div>
                 <span>일정</span>
-                <input type='text'/>
+                <input className='titleInput' type='text' value={inputTime} onChange={handleInputTime} />
               </div>
               <div>
                 <span>시간</span>
-                <input type='time'/>
+                <input type='time' value={inputTitle} onChange={handleInputTitle} />
               </div>
-              <button button className='plusPlan' onClick={() => handleInsertModal()}><IoMdClose /></button>
+              <button button><IoMdCheckmark className='checkBtn mainBtn' /></button>
+              <button button onClick={() => handleInsertModal()}><IoMdClose className='closeBtn' /></button>
                 
             </InsertModal>
           </InsertModalBg>

@@ -83,7 +83,6 @@ const GlobalStyle = createGlobalStyle`
     background: linear-gradient(-45deg, #33ccff 0%, #ff99cc 100%);
     color: white;
 
-    background-size: 400% 400%;
     animation: gradient1 5s ease infinite;
 
   }

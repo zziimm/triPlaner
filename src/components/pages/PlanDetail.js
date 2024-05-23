@@ -1,10 +1,12 @@
 import { collection, doc, getDocs, query, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { db } from '../../firebase.config';
 import { FaPlus } from "react-icons/fa";
 import PlanBox from './PlanBox.js';
+import { useSelector } from 'react-redux';
+import { selectLoginUser } from '../../features/userinfo/userInfoSlice';
 
 
 const PlanDetailLayout = styled.div`
@@ -36,9 +38,15 @@ const PlanDetailLayout = styled.div`
 
 function PlanDetail(props) {
   const { planId } = useParams();
+  const isLogin = useSelector(selectLoginUser);
+
+  const navigate = useNavigate();
+
   const [planTitle, setPlanTitle] = useState('');
   const [planDetail, setPlanDetail] = useState('');
   const [plusDate, setPlusDate] = useState('')
+
+
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -79,6 +87,10 @@ function PlanDetail(props) {
     }
     fetchListings()
     fetchDetailPlan()
+    
+    if (!isLogin.email) {
+      navigate('/');
+    }
 
   }, [plusDate])
   

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { useSelector } from 'react-redux';
 import { selectLoginUser } from '../../features/userinfo/userInfoSlice';
@@ -47,11 +47,18 @@ const PlanInsertLayout = styled.div`
 function PlanInsert() {
   const isLogin = useSelector(selectLoginUser);
   const email = isLogin?.email
-  
   const navigate = useNavigate();
+  
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  useEffect(() => {
+    if (!email) {
+      navigate('/');
+    }
+  }, []);
+
+
   const titleChange = (e) => setTitle(e.target.value)
   const startDateChange = (e) => setStartDate(e.target.value)
   const endDateChange = (e) => setEndDate(e.target.value)

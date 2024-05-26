@@ -55,6 +55,7 @@ const InsertModal = styled.div`
   padding: 1rem;
   background-color: #3d3d3d;
   input {
+    text-align: center;
     border: none;
     font-size: 20px;
     
@@ -82,7 +83,7 @@ const InsertModal = styled.div`
 
 `;
 
-function PlanBox({ day }) {
+function PlanBox({ day, handlePlusDetail, id }) {
   const [insertModal, setInsertModal] = useState(false);
   const [inputTime, setInputTime] = useState('');
   const [inputTitle, setInputTitle] = useState('');
@@ -112,7 +113,7 @@ function PlanBox({ day }) {
                 <span>시간</span>
                 <input type='time' value={inputTitle} onChange={handleInputTitle} />
               </div>
-              <button button><IoMdCheckmark className='checkBtn mainBtn' /></button>
+              <button button onClick={() => handlePlusDetail(inputTitle, inputTime, id)}><IoMdCheckmark className='checkBtn mainBtn' /></button>
               <button button onClick={() => handleInsertModal()}><IoMdClose className='closeBtn' /></button>
                 
             </InsertModal>

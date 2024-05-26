@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, query, setDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -111,14 +111,30 @@ function PlanDetail(props) {
   const handlePlusDate = async () => {
     try {
       console.log(planDetail);
-      const docRef = doc(collection(db, 'Planer', planId, `DetailPlan`));
+      const docRef = doc(collection(db, planId, `DetailPlan`));
       await setDoc(docRef, {
         day: planDetail.length + 1,
-        detail: {}
+        detail: []
       });
 
       alert('일정 등록 완료!')
       setPlusDate(planDetail.length + 1)
+    } catch (error) {
+      console.log(error);
+      alert('실패');
+    }
+  }
+
+
+  const handlePlusDetail = async (inputTitle, inputTime, id) => {
+    console.log(planId);
+    console.log(id);
+    try {
+      const docRef = doc(collection(db, 'Planer', planId, `DetailPlan`, id));
+      await addDoc(docRef, {
+        detail: {inputTitle, inputTime}
+      });
+      alert('일정 등록 완료!')
     } catch (error) {
       console.log(error);
       alert('실패');
@@ -145,18 +161,10 @@ function PlanDetail(props) {
         {planDetailSort?.map((plan) => {
           return <PlanBox 
             key={plan.id}
+            id={plan.id}
             day={plan.data.day}
+            handlePlusDetail={handlePlusDetail}
           />
-          //   <>
-          //     <PlanDateBox key={plan.id}>
-          //       <p>Day {plan.data.day}</p>
-          //       <PlanTextBox>
-
-          //       </PlanTextBox>
-          //       <button onClick={() => handleInsertModal()}><FaPlus /></button>
-          //     </PlanDateBox>
-          //   </>
-          // )
         })}
         <button className='plusDate' onClick={() => handlePlusDate()}><FaPlus /></button>
       </PlanDetailLayout>

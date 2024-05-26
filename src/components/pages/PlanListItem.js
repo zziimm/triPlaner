@@ -130,8 +130,8 @@ function PlanListItem({title, endDate, startDate, id, removeBtn, updateBtn}) {
   const navigate = useNavigate();
   const [changeTitle, setChangeTitle] = useState(title);
   const [inputModal, setInputModal] = useState(false);
-  const [changeStartDate, setChangeStartDate] = useState(endDate)
-  const [changeEndDate, setChangeEndDate] = useState(startDate)
+  const [changeStartDate, setChangeStartDate] = useState(startDate)
+  const [changeEndDate, setChangeEndDate] = useState(endDate)
 
   const [dday, setDday] = useState('')
   
@@ -181,7 +181,7 @@ function PlanListItem({title, endDate, startDate, id, removeBtn, updateBtn}) {
               </div>
               <div>
                 <span className='dateName'>도착일</span>
-                <input value={changeEndDate} onChange={endDateChange} type='date' placeholder='날짜'/>
+                <input value={changeEndDate === '' || changeEndDate < changeStartDate ? changeStartDate : changeEndDate} onChange={endDateChange} type='date' placeholder='날짜'/>
               </div>
             </div>
             <div className='btnBox'>

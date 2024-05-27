@@ -27,13 +27,24 @@ const PlanBoxLayout = styled.div`
     border: 1px solid #fff;
     color: #fff;
   }
-`;
-const PlanTextBox = styled.div`
-  width: 100%;
-  /* height: 300px; */
 
-`;
+  .planTextBox {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    width: 100%;
+    text-align: start;
+    
+    .planBox {
+      margin-left: 10px;
+      
+      span + span {
+        margin-left: 5px;
+      }
+    }
 
+  }
+`;
 const InsertModalBg = styled.div`
   position: fixed;
   top: 50%;
@@ -83,7 +94,7 @@ const InsertModal = styled.div`
 
 `;
 
-function PlanBox({ day, handlePlusDetail, id }) {
+function PlanBox({ day, handlePlusDetail, id, detail }) {
   const [insertModal, setInsertModal] = useState(false);
   const [inputTime, setInputTime] = useState('');
   const [inputTitle, setInputTitle] = useState('');
@@ -98,9 +109,17 @@ function PlanBox({ day, handlePlusDetail, id }) {
   return (
     <PlanBoxLayout>
       <p>Day {day}</p>
-      <PlanTextBox>
-
-      </PlanTextBox>
+      {detail?.map((text, inx) => {
+        return (
+          <div className='planTextBox' key={inx}>
+            <input type='checkBox' />
+            <div className='planBox'>
+              <span>{text.inputTitle}</span>
+              <span>{text.inputTime}</span>
+            </div>
+          </div>
+        )
+      })}
       {insertModal 
         ?
           <InsertModalBg>
@@ -113,8 +132,8 @@ function PlanBox({ day, handlePlusDetail, id }) {
                 <span>시간</span>
                 <input type='time' value={inputTitle} onChange={handleInputTitle} />
               </div>
-              <button button onClick={() => handlePlusDetail(inputTitle, inputTime, id)}><IoMdCheckmark className='checkBtn mainBtn' /></button>
-              <button button onClick={() => handleInsertModal()}><IoMdClose className='closeBtn' /></button>
+              <button onClick={() => handlePlusDetail(inputTitle, inputTime, id)}><IoMdCheckmark className='checkBtn mainBtn' /></button>
+              <button onClick={() => handleInsertModal()}><IoMdClose className='closeBtn' /></button>
                 
             </InsertModal>
           </InsertModalBg>

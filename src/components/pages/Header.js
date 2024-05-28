@@ -17,6 +17,7 @@ const HeaderLayout = styled.div`
   overflow: hidden;
   box-sizing: border-box;
 
+
   .app-title {
     width: 100%;
     position: relative;

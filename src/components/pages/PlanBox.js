@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { FaPlus } from "react-icons/fa";
 import { IoMdClose, IoMdCheckmark } from "react-icons/io";
+import { LuPencilLine } from "react-icons/lu";
 
 
 const PlanBoxLayout = styled.div`
@@ -31,10 +32,15 @@ const PlanBoxLayout = styled.div`
   .planTextBox {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin: 10px 0;
     width: 100%;
     text-align: start;
     
+    .checkPlanBox {
+      display: flex;
+      align-items: center;
+    }
     .planBox {
       margin-left: 10px;
       
@@ -42,7 +48,10 @@ const PlanBoxLayout = styled.div`
         margin-left: 5px;
       }
     }
+    .changeBox {
 
+      svg {color: #fff;}
+    }
   }
 `;
 const InsertModalBg = styled.div`
@@ -94,7 +103,7 @@ const InsertModal = styled.div`
 
 `;
 
-function PlanBox({ day, handlePlusDetail, id, detail }) {
+function PlanBox({ day, handlePlusDetail, id, detail, removeBtn }) {
   const [insertModal, setInsertModal] = useState(false);
   const [inputTime, setInputTime] = useState('');
   const [inputTitle, setInputTitle] = useState('');
@@ -106,16 +115,23 @@ function PlanBox({ day, handlePlusDetail, id, detail }) {
     setInsertModal(!insertModal)
   };
 
+
   return (
     <PlanBoxLayout>
       <p>Day {day}</p>
       {detail?.map((text, inx) => {
         return (
           <div className='planTextBox' key={inx}>
-            <input type='checkBox' />
-            <div className='planBox'>
-              <span>{text.inputTitle}</span>
-              <span>{text.inputTime}</span>
+            <div className='checkPlanBox'>
+              <input type='checkBox' />
+              <div className='planBox'>
+                <span>{text.inputTitle}</span>
+                <span>{text.inputTime}</span>
+              </div>
+            </div>
+            <div className='changeBox'>
+              <button><LuPencilLine /></button>
+              <button onClick={() => removeBtn(text.inputTitle, text.inputTime, id)}><IoMdClose /></button>
             </div>
           </div>
         )
@@ -132,7 +148,7 @@ function PlanBox({ day, handlePlusDetail, id, detail }) {
                 <span>시간</span>
                 <input type='time' value={inputTitle} onChange={handleInputTitle} />
               </div>
-              <button onClick={() => handlePlusDetail(inputTitle, inputTime, id)}><IoMdCheckmark className='checkBtn mainBtn' /></button>
+              <button onClick={() => {handlePlusDetail(inputTitle, inputTime, id); handleInsertModal();}}><IoMdCheckmark className='checkBtn mainBtn' /></button>
               <button onClick={() => handleInsertModal()}><IoMdClose className='closeBtn' /></button>
                 
             </InsertModal>

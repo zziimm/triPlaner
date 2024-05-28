@@ -1,5 +1,5 @@
-import { addDoc, arrayUnion, collection, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import { FieldValue, addDoc, arrayUnion, collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { db } from '../../firebase.config';
@@ -15,7 +15,20 @@ const PlanDetailLayout = styled.div`
   overflow-y: auto;
   position: relative;
   padding: 1rem 0rem;
+  overflow: overlay;
 
+  &::-webkit-scrollbar {
+
+    width: 5px;
+
+  }
+
+  &::-webkit-scrollbar-thumb {
+
+    background-color: hsla(0, 0%, 42%, 0.49);
+    border-radius: 100px;
+
+  }
 
   h1 {
     width: 100%;
@@ -45,7 +58,7 @@ function PlanDetail(props) {
   const [planTitle, setPlanTitle] = useState('');
   const [planDetail, setPlanDetail] = useState('');
   const [plusDate, setPlusDate] = useState('')
-
+  const [count, setCount] = useState('')
 
 
   useEffect(() => {
@@ -78,8 +91,12 @@ function PlanDetail(props) {
             data: doc.data()
           })
         })
-        console.log(listings);
-        setPlanDetail(listings);
+        let planDetailSort = listings.sort((a,b) => {
+          if(a.data.day > b.data.day) return 1;
+          if(a.data.day < b.data.day) return -1;
+          return 0;
+        });
+        setPlanDetail(planDetailSort);
       } catch (error) {
         alert('불러오기에 실패하였습니다.');
         console.log(error);
@@ -112,8 +129,7 @@ function PlanDetail(props) {
       navigate('/');
     }
 
-  }, [plusDate])
-  
+  }, [plusDate, count])
   
 
   // 박 구하기
@@ -148,6 +164,7 @@ function PlanDetail(props) {
   
   const handlePlusDate = async () => {
     try {
+
       console.log(planDetail);
       const docRef = doc(collection(db, `DetailPlan`));
       await setDoc(docRef, {
@@ -156,7 +173,7 @@ function PlanDetail(props) {
         detail: []
       });
 
-      alert('일정 등록 완료!')
+      // alert('일정 등록 완료!')
       setPlusDate(planDetail.length + 1)
     } catch (error) {
       console.log(error);
@@ -184,9 +201,10 @@ function PlanDetail(props) {
     console.log(planId);
     console.log(id);
     try {
-      await updateDoc(doc(db, `DetailPlan`, `${id}`), {
+      await updateDoc(doc(db, "DetailPlan", `${id}`), {
         detail: arrayUnion({inputTitle, inputTime})
       });
+      setCount(2);
       alert('일정 등록 완료!')
     } catch (error) {
       console.log(error);
@@ -195,29 +213,43 @@ function PlanDetail(props) {
   }
 
 
+  
+  // let planDetailSort = planDetail.sort((a,b) => {
+  //   if(a.data.day > b.data.day) return 1;
+  //   if(a.data.day < b.data.day) return -1;
+  //   return 0;
+  // });
+  
+  const removeBtn = async (inputTitle, inputTime, id) => {
+    try {
+      await deleteDoc(doc(db, "DetailPlan", `${id}`), {
+        detail: delete(inputTitle, inputTime)
+      });
+      setCount(2);
+      alert('삭제 완료!');
+    } catch (error) {
+      console.log(error);
+      alert("실패");
+    }
+  };
+  
+  
   if (!planDetail) {
     return
   }
-
-  let planDetailSort = planDetail.sort((a,b) => {
-    if(a.data.day > b.data.day) return 1;
-    if(a.data.day < b.data.day) return -1;
-    return 0;
-  });
-
-
   
   return (
     <>
       <PlanDetailLayout>
         <h1>{planTitle?.data?.title}</h1>
-        {planDetailSort?.map((plan) => {
+        {planDetail?.map((plan) => {
           return <PlanBox 
             key={plan.id}
             id={plan.id}
             day={plan.data.day}
             detail={plan.data.detail}
             handlePlusDetail={handlePlusDetail}
+            removeBtn={removeBtn}
           />
         })}
         <button className='plusDate' onClick={() => handlePlusDate()}><FaPlus /></button>

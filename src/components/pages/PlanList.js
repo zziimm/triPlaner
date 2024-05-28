@@ -15,6 +15,21 @@ const PlanListLayout = styled.div`
   min-height: 400px;
   max-height: 550px;
   overflow-y: auto;
+  overflow: overlay;
+
+  &::-webkit-scrollbar {
+
+    width: 5px;
+
+  }
+
+  &::-webkit-scrollbar-thumb {
+
+    background-color: hsla(0, 0%, 42%, 0.49);
+    border-radius: 100px;
+
+  }
+
 `;
 
 

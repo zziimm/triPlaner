@@ -106,7 +106,7 @@ function PlanItem({ inputTime, inputTitle, id, inx, index, removeBtn, updateBtn 
 
             </div>
             <div className='btnBox'>
-              <IoMdCheckmark className='check' onClick={() => {updateBtn(inx, index, id, inputTitle, changeTitle, changeTime, ); setChangeModal(false)}} />
+              <IoMdCheckmark className='check' onClick={() => {updateBtn(inx, index, id, inputTitle, inputTime, changeTitle, changeTime, ); setChangeModal(false)}} />
               <IoMdClose onClick={() => handleChangeModal()}/>
             </div>
           </ChangeContainer>  

@@ -1,4 +1,4 @@
-import { FieldValue, addDoc, arrayUnion, collection, deleteDoc, deleteField, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { FieldValue, addDoc, arrayRemove, arrayUnion, collection, deleteDoc, deleteField, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -202,7 +202,7 @@ function PlanDetail(props) {
     console.log(id);
     try {
       await updateDoc(doc(db, "DetailPlan", `${id}`), {
-        detail: arrayUnion({ inputTitle, inputTime})
+        detail: arrayUnion({ inputTitle, inputTime })
       });
       setCount(count + 1);
       alert('일정 등록 완료!')
@@ -236,28 +236,33 @@ function PlanDetail(props) {
     }
   };
   
-  const updateBtn = async (inx, index, id, inputTitle, changeTitle, changeTime) => {
+  const updateBtn = async (inx, index, id, inputTitle, inputTime, changeTitle, changeTime) => {
     try {
-      // let list = [...planDetail][index].data.detail[inx] = {inputTitle: changeTitle, inputTime: changeTime}
+      let list = [...planDetail][index].data.detail[inx] = {inputTitle: changeTitle, inputTime: changeTime}
       // console.log(list);
-      let list = [...planDetail]
-      const changeList = list.map((list2, i) => {
-        if (list2.id === id) {
-          list2.data.detail.map((list3) => {
-            if (list3.inputTitle === inputTitle) {
-              return {inputTitle: changeTitle, inputTime: changeTime}
-            }
-          })
-        }
-      })
-      console.log(changeList);
-      // const washingtonRef = doc(db, "DetailPlan", `${id}`);
-      // await updateDoc(washingtonRef, {
-      //   inputTitle: `${changeTitle}`,
-      //   inputTime: `${changeTime}`,
-      // });
-      // setCount(count + 3);
-      // alert('수정 완료!');
+      // let list = [...planDetail]
+      // const changeList = list.map((list2, i) => {
+      //   if (list2.id === id) {
+      //     list2.data.detail.map((list3) => {
+      //       if (list3.inputTitle === inputTitle) {
+      //         console.log(list);
+      //         // return {...list3, inputTitle: changeTitle, inputTime: changeTime}
+              
+      //       }
+      //     })
+      //   }
+      // })
+      console.log(list);
+
+      const washingtonRef = doc(db, "DetailPlan", `${id}`);
+      await updateDoc(washingtonRef, {
+        detail: arrayRemove({inputTitle, inputTime})
+      });
+      await updateDoc(washingtonRef, {
+        detail: arrayUnion(list)
+      });
+      setCount(count + 3);
+      alert('수정 완료!');
     } catch (error) {
       console.log(error);
       alert("실패");
@@ -269,7 +274,7 @@ function PlanDetail(props) {
     return
   }
   
-  console.log(planDetail);
+  // console.log(planDetail);
   return (
     <>
       <PlanDetailLayout>

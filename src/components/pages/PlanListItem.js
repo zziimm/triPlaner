@@ -70,7 +70,6 @@ const ChangeContainer = styled.div`
     display: flex;
     align-items: center;
   }
-
 `;
 
 const Text = styled.div`
@@ -128,8 +127,8 @@ const Text = styled.div`
 
 function PlanListItem({title, endDate, startDate, id, removeBtn, updateBtn}) {
   const navigate = useNavigate();
-  const [changeTitle, setChangeTitle] = useState(title);
   const [inputModal, setInputModal] = useState(false);
+  const [changeTitle, setChangeTitle] = useState(title);
   const [changeStartDate, setChangeStartDate] = useState(startDate)
   const [changeEndDate, setChangeEndDate] = useState(endDate)
 

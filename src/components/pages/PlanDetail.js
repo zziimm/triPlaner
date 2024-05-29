@@ -1,4 +1,4 @@
-import { FieldValue, addDoc, arrayUnion, collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { FieldValue, addDoc, arrayUnion, collection, deleteDoc, deleteField, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -202,9 +202,9 @@ function PlanDetail(props) {
     console.log(id);
     try {
       await updateDoc(doc(db, "DetailPlan", `${id}`), {
-        detail: arrayUnion({inputTitle, inputTime})
+        detail: arrayUnion({ inputTitle, inputTime})
       });
-      setCount(2);
+      setCount(count + 1);
       alert('일정 등록 완료!')
     } catch (error) {
       console.log(error);
@@ -222,11 +222,42 @@ function PlanDetail(props) {
   
   const removeBtn = async (inputTitle, inputTime, id) => {
     try {
-      await deleteDoc(doc(db, "DetailPlan", `${id}`), {
-        detail: delete(inputTitle, inputTime)
+      let list = [...planDetail].filter((filterID) => filterID.id === id);
+      let list2 = list[0].data.detail.filter((filter) => filter.inputTitle !== inputTitle);
+      
+      await updateDoc(doc(db, "DetailPlan", `${id}`), {
+        detail: list2
       });
-      setCount(2);
+      setCount(count + 2);
       alert('삭제 완료!');
+    } catch (error) {
+      console.log(error);
+      alert("실패");
+    }
+  };
+  
+  const updateBtn = async (inx, index, id, inputTitle, changeTitle, changeTime) => {
+    try {
+      // let list = [...planDetail][index].data.detail[inx] = {inputTitle: changeTitle, inputTime: changeTime}
+      // console.log(list);
+      let list = [...planDetail]
+      const changeList = list.map((list2, i) => {
+        if (list2.id === id) {
+          list2.data.detail.map((list3) => {
+            if (list3.inputTitle === inputTitle) {
+              return {inputTitle: changeTitle, inputTime: changeTime}
+            }
+          })
+        }
+      })
+      console.log(changeList);
+      // const washingtonRef = doc(db, "DetailPlan", `${id}`);
+      // await updateDoc(washingtonRef, {
+      //   inputTitle: `${changeTitle}`,
+      //   inputTime: `${changeTime}`,
+      // });
+      // setCount(count + 3);
+      // alert('수정 완료!');
     } catch (error) {
       console.log(error);
       alert("실패");
@@ -238,18 +269,21 @@ function PlanDetail(props) {
     return
   }
   
+  console.log(planDetail);
   return (
     <>
       <PlanDetailLayout>
         <h1>{planTitle?.data?.title}</h1>
-        {planDetail?.map((plan) => {
+        {planDetail?.map((plan, index) => {
           return <PlanBox 
             key={plan.id}
+            index={index}
             id={plan.id}
             day={plan.data.day}
             detail={plan.data.detail}
             handlePlusDetail={handlePlusDetail}
             removeBtn={removeBtn}
+            updateBtn={updateBtn}
           />
         })}
         <button className='plusDate' onClick={() => handlePlusDate()}><FaPlus /></button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { css, styled } from 'styled-components';
-import { RiArrowDropRightLine, RiArrowDropDownLine } from "react-icons/ri";
+import { RiArrowDropRightLine } from "react-icons/ri";
 import { IoMdClose, IoMdCheckmark } from "react-icons/io";
 import { LuPencilLine } from "react-icons/lu";
 import { useNavigate } from 'react-router-dom';
@@ -135,8 +135,23 @@ function PlanListItem({title, endDate, startDate, id, removeBtn, updateBtn}) {
   const [dday, setDday] = useState('')
   
   useEffect(() => {
+    function find_day(){
+      const christmas = new Date(startDate);  //디데이 설정
+      const today = new Date();  //밀리세컨드 단위의 시간 표시 1초=1000
+      
+      const day_gap = christmas - today;  //크리스마스까지 남은 밀리세컨드 초 값
+      
+      const day = Math.floor(day_gap / (1000*60*60*24));
+      // const hour = Math.floor(day_gap / (1000*60*60) % 24);
+      // const min = Math.floor(day_gap / (1000*60) % 60);
+      // const sec = Math.floor(day_gap / 1000%60);
+      setDday(day);
+      
+    // setInterval(find_day, 1000);  //초마다 디데이 기능 실행
+  
+    }
     find_day();
-  }, []);
+  }, [startDate]);
   
   const handleInputModal = () => {
     setInputModal(!inputModal)
@@ -146,21 +161,6 @@ function PlanListItem({title, endDate, startDate, id, removeBtn, updateBtn}) {
   const endDateChange = (e) => setChangeEndDate(e.target.value)
 
 
-
-  function find_day(){
-    const christmas = new Date(startDate);  //디데이 설정
-    const today = new Date();  //밀리세컨드 단위의 시간 표시 1초=1000
-    
-    const day_gap = christmas - today;  //크리스마스까지 남은 밀리세컨드 초 값
-    
-    const day = Math.floor(day_gap / (1000*60*60*24));
-    const hour = Math.floor(day_gap / (1000*60*60) % 24);
-    const min = Math.floor(day_gap / (1000*60) % 60);
-    const sec = Math.floor(day_gap / 1000%60);
-    setDday(day);
-
-  }
-  // setInterval(find_day, 1000);  //초마다 디데이 기능 실행
 
 
   return (

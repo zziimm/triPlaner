@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { FaPlus } from "react-icons/fa";
 import { IoMdClose, IoMdCheckmark } from "react-icons/io";
-import { LuPencilLine } from "react-icons/lu";
 import PlanItem from './PlanItem';
 
 
@@ -104,10 +103,6 @@ const InsertModal = styled.div`
 
 function PlanBox({ day, handlePlusDetail, id, index, detail, removeBtn, updateBtn }) {
   const [insertModal, setInsertModal] = useState(false);
-  const [changeModal, setChangeModal] = useState(false);
-  const [changeTitle, setChangeTitle] = useState('');
-  const [changeStartDate, setChangeStartDate] = useState('')
-
 
   const [inputTime, setInputTime] = useState('');
   const [inputTitle, setInputTitle] = useState('');
@@ -116,57 +111,17 @@ function PlanBox({ day, handlePlusDetail, id, index, detail, removeBtn, updateBt
   const handleInputTitle = (e) => setInputTitle(e.target.value);
 
   const handleInsertModal = () => setInsertModal(!insertModal);
-  const handleChangeModal = () => setChangeModal(!changeModal);
 
-  const handleInput = (e) => setChangeTitle(e.target.value);
-  const startDateChange = (e) => setChangeStartDate(e.target.value)
+  let planDetailSort = detail.sort((a,b) => {
+    if(a.inputTime > b.inputTime) return 1;
+    if(a.inputTime < b.inputTime) return -1;
+    return 0;
+  });
 
   return (
     <PlanBoxLayout>
       <p>Day {day}</p>
-      {/* {changeModal
-        ?
-          <ChangeContainer>
-            <div className='changeBox'>
-              <div>
-                <input type='text' value={changeTitle} onChange={handleInput} />
-              </div>
-              <div>
-                <span className='dateName'>출발일</span>
-                <input value={changeStartDate} onChange={startDateChange} type='time' />
-              </div>
-
-            </div>
-            <div className='btnBox'>
-              <IoMdCheckmark className='check' onClick={() => {updateBtn(id, changeTitle, changeStartDate, ); setChangeModal(false)}} />
-              <IoMdClose onClick={() => handleChangeModal()}/>
-            </div>
-          </ChangeContainer>
-        :
-          <>
-            {detail?.map((text, inx) => {
-              return (
-                <>
-                  <div className='planTextBox' key={inx}>
-                    <div className='checkPlanBox'>
-                      <input type='checkBox' />
-                      <div className='planBox'>
-                        <span>{text.inputTime}</span>
-                        <span>{text.inputTitle}</span>
-                      </div>
-                    </div>
-                    <div className='changeBox'>
-                      <button onClick={() => handleChangeModal()}><LuPencilLine /></button>
-                      <button onClick={() => removeBtn(text.inputTitle, text.inputTime, id)}><IoMdClose /></button>
-                    </div>
-                  </div>
-                </>
-              )
-            })}
-          </>
-      } */}
-          
-      {detail?.map((text, inx) => {
+      {planDetailSort?.map((text, inx) => {
         return (
           <PlanItem 
             key={inx}
@@ -178,22 +133,6 @@ function PlanBox({ day, handlePlusDetail, id, index, detail, removeBtn, updateBt
             removeBtn={removeBtn}
             updateBtn={updateBtn}
           />
-
-
-          //   <div className='planTextBox' key={inx}>
-          //     <div className='checkPlanBox'>
-          //       <input type='checkBox' />
-          //       <div className='planBox'>
-          //         <span>{text.inputTime}</span>
-          //         <span>{text.inputTitle}</span>
-          //       </div>
-          //     </div>
-          //     <div className='changeBox'>
-          //       <button onClick={() => handleChangeModal()}><LuPencilLine /></button>
-          //       <button onClick={() => removeBtn(text.inputTitle, text.inputTime, id)}><IoMdClose /></button>
-          //     </div>
-          //   </div>
-          // </PlanItem>
         )
       })}
           

@@ -1,5 +1,5 @@
-import { FieldValue, addDoc, arrayRemove, arrayUnion, collection, deleteDoc, deleteField, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
-import React, { useEffect, useRef, useState } from 'react';
+import {  arrayRemove, arrayUnion, collection, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { db } from '../../firebase.config';
@@ -102,34 +102,14 @@ function PlanDetail(props) {
         console.log(error);
       }
     }
-    
-    // Planer 안에 데이터 불러오기 05/26까지 사용
-    // const fetchDetailPlan = async () => {
-    //   try {
-    //     const listingRef = query(collection(db, 'Planer', planId, `DetailPlan`))
-    //     const docSnap = await getDocs(listingRef)
-    //     const listings = []    
-    //     docSnap.forEach((doc) => {
-    //       listings.push({
-    //         id: doc.id,
-    //         data: doc.data()
-    //       })
-    //     })
-    //     console.log(listings);
-    //     setPlanDetail(listings);
-    //   } catch (error) {
-    //     alert('불러오기에 실패하였습니다.');
-    //     console.log(error);
-    //   }
-    // }
+
     fetchListings()
     fetchDetailPlan()
     
     if (!isLogin.email) {
       navigate('/');
     }
-
-  }, [plusDate, count])
+  }, [isLogin, planId, navigate, plusDate, count])
   
 
   // 박 구하기
@@ -142,25 +122,6 @@ function PlanDetail(props) {
   //   return Math.abs(diffDate / (1000 * 60 * 60 * 24));
   // }
   // const resdays = getDateDiff(startDate, endDate);
-
-
-  // Planer 안에 Date 생성 05/26까지 사용
-  // const handlePlusDate = async () => {
-  //   try {
-  //     console.log(planDetail);
-  //     const docRef = doc(collection(db, planId, `DetailPlan`));
-  //     await setDoc(docRef, {
-  //       day: planDetail.length + 1,
-  //       detail: []
-  //     });
-
-  //     alert('일정 등록 완료!')
-  //     setPlusDate(planDetail.length + 1)
-  //   } catch (error) {
-  //     console.log(error);
-  //     alert('실패');
-  //   }
-  // }
   
   const handlePlusDate = async () => {
     try {
@@ -181,22 +142,6 @@ function PlanDetail(props) {
     }
   }
 
-  // Planer 안에  detailPlan생성 05/26까지 사용
-  // const handlePlusDetail = async (inputTitle, inputTime, id) => {
-  //   console.log(planId);
-  //   console.log(id);
-  //   try {
-  //     // const docRef = doc(collection(db, 'Planer', planId, `DetailPlan`, id, "text"));
-  //     await addDoc(collection(db, 'Planer', planId, `DetailPlan`, id, "text"), {
-  //       text: {inputTitle, inputTime}
-  //     });
-  //     alert('일정 등록 완료!')
-  //   } catch (error) {
-  //     console.log(error);
-  //     alert('실패');
-  //   }
-  // }
-  
   const handlePlusDetail = async (inputTitle, inputTime, id) => {
     console.log(planId);
     console.log(id);
@@ -239,19 +184,7 @@ function PlanDetail(props) {
   const updateBtn = async (inx, index, id, inputTitle, inputTime, changeTitle, changeTime) => {
     try {
       let list = [...planDetail][index].data.detail[inx] = {inputTitle: changeTitle, inputTime: changeTime}
-      // console.log(list);
-      // let list = [...planDetail]
-      // const changeList = list.map((list2, i) => {
-      //   if (list2.id === id) {
-      //     list2.data.detail.map((list3) => {
-      //       if (list3.inputTitle === inputTitle) {
-      //         console.log(list);
-      //         // return {...list3, inputTitle: changeTitle, inputTime: changeTime}
-              
-      //       }
-      //     })
-      //   }
-      // })
+
       console.log(list);
 
       const washingtonRef = doc(db, "DetailPlan", `${id}`);
@@ -274,7 +207,6 @@ function PlanDetail(props) {
     return
   }
   
-  // console.log(planDetail);
   return (
     <>
       <PlanDetailLayout>

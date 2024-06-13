@@ -63,9 +63,7 @@ const InsertModalBg = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 100;
-  /* display :flex; 
-  justify-content:center;
-  align-items :center; */
+
 `;
 const InsertModal = styled.div`
   position: absolute;

@@ -33,7 +33,7 @@ const PlanListLayout = styled.div`
 `;
 
 
-function PlanList(props) {
+function PlanList() {
   const navigate = useNavigate();
 
   const [planList, setPlanList] = useState(null);

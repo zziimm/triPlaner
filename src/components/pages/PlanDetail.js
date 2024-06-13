@@ -11,7 +11,7 @@ import { selectLoginUser } from '../../features/userinfo/userInfoSlice';
 
 const PlanDetailLayout = styled.div`
   min-height: 400px;
-  max-height: 550px;
+  max-height: 450px;
   overflow-y: auto;
   position: relative;
   padding: 1rem 0rem;
@@ -125,8 +125,6 @@ function PlanDetail(props) {
   
   const handlePlusDate = async () => {
     try {
-
-      console.log(planDetail);
       const docRef = doc(collection(db, `DetailPlan`));
       await setDoc(docRef, {
         planId,
@@ -143,11 +141,11 @@ function PlanDetail(props) {
   }
 
   const handlePlusDetail = async (inputTitle, inputTime, id) => {
-    console.log(planId);
-    console.log(id);
+    // console.log(planId);
+    // console.log(id);
     try {
       await updateDoc(doc(db, "DetailPlan", `${id}`), {
-        detail: arrayUnion({ inputTitle, inputTime })
+        detail: arrayUnion({ inputTitle, inputTime, checked: false })
       });
       setCount(count + 1);
       alert('일정 등록 완료!')
@@ -176,7 +174,7 @@ function PlanDetail(props) {
       setCount(count + 2);
       alert('삭제 완료!');
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       alert("실패");
     }
   };
@@ -185,7 +183,7 @@ function PlanDetail(props) {
     try {
       let list = [...planDetail][index].data.detail[inx] = {inputTitle: changeTitle, inputTime: changeTime}
 
-      console.log(list);
+      // console.log(list);
 
       const washingtonRef = doc(db, "DetailPlan", `${id}`);
       await updateDoc(washingtonRef, {
@@ -197,7 +195,7 @@ function PlanDetail(props) {
       setCount(count + 3);
       alert('수정 완료!');
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       alert("실패");
     }
   };

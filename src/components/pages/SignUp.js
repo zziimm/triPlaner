@@ -83,7 +83,7 @@ function SignUp() {
       } else if (errorCode === "auth/email-already-in-use") {
         alert('이미 사용중인 이메일입니다.');
       } else if (errorCode === "auth/weak-password") {
-        alert('비밀번호는 최소 4자리 이상 입니다.');
+        alert('비밀번호는 최소 6자리 이상 입니다.');
       }
       console.log(errorCode);
       console.log(errorMessage);
@@ -97,8 +97,8 @@ function SignUp() {
       <LoginLayout>
         <div className='signBox'>
           <div className='LoginBox'>
-            <input className='idInput' type='text' value={inputUserId} onChange={handleInputUserId} placeholder='아이디'/>
-            <input className='pwInput' type='password' value={inputUserPass} onChange={handleInputUserPass} placeholder='비밀번호'/>
+            <input className='idInput' type='text' value={inputUserId} onChange={handleInputUserId} placeholder='이메일 형식'/>
+            <input className='pwInput' type='password' value={inputUserPass} onChange={handleInputUserPass} placeholder='6자리 이상'/>
             <button onClick={() => handleSignUp(inputUserId, inputUserPass)}>가입하기</button>
           </div>
         </div>
